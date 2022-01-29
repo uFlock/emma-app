@@ -9,7 +9,7 @@
 		"nodemon": "nodemon",
 		"build": "shx rm -rf ./build && tsc -p tsconfig.build.json",
 		"test": "jest --watchAll --no-cache",
-		"test:ci": "jest",
+		"test:ci": "jest --detectOpenHandles",
 		"check-types": "tsc -p tsconfig.json --noEmit"
 	},
 	"repository": {
