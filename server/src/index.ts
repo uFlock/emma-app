@@ -48,4 +48,3 @@ const handleTermination = async (server: http.Server, mongoose: Mongoose) => {
 const httpServerClose = async (server: http.Server): Promise<boolean> =>
 	new Promise((resolve: (result: boolean) => void) =>
 		server.close(() => resolve(true)));
-
