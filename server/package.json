@@ -28,6 +28,13 @@
 		"url": "https://github.com/uFlock/emma-app/issues"
 	},
 	"homepage": "https://github.com/uFlock/emma-app#readme",
+	"jest": {
+		"preset": "ts-jest",
+		"testEnvironment": "node",
+		"setupFilesAfterEnv": [
+			"./src/test/setup.ts"
+		]
+	},
 	"devDependencies": {
 		"@types/jest": "^27.4.0",
 		"@types/supertest": "^2.0.11",
