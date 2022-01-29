@@ -1,0 +1,15 @@
+{
+	"name": "emma-app-technical-task",
+	"version": "1.0.0",
+	"description": "Emma App Technical Task",
+	"scripts": {
+		"dev": "npm run down-all && docker-compose -f docker-compose-dev.yml up --build",
+		"start": "npm run down-all && docker-compose -f docker-compose-prod.yml up --build",
+		"down-all": "docker-compose -f docker-compose-dev.yml down && docker-compose -f docker-compose-prod.yml down",
+		"npm-install": "cd server && npm install"
+	},
+	"author": "Vladimir Muzichuk",
+	"license": "MIT",
+	"dependencies": {},
+	"devDependencies": {}
+}

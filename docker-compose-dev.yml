@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+    apiServer:
+        env_file:
+            - ./server/.env.dev
+        image: "uflock/emma-app-api-server"
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+            target: development
+        volumes:
+            - ./server:/server
+            - /server/node_modules/ #because I am developing on windows some modules not compatible between OSs
+        ports:
+            - "3000:3000"
+        networks:
+            - frontend
+            - backend
+    mongo-db:
+        image: "mongo"
+        command: mongod --quiet --logpath /dev/null
+        ports:
+            - "27017:27017"
+        networks:
+            - backend
+networks:
+    frontend:
+    backend:
