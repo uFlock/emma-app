@@ -1,0 +1,7 @@
+
+POST http://localhost:3000/claim-free-share
+Content-Type: application/json
+
+{
+	"email": "test3@test.com"
+}

@@ -22,22 +22,29 @@ export const generateUsers = (numberOfUsers: number = 100) => {
 
 	for (let i = 0; i < numberOfUsers; i++) {
 
-		const firstName = faker.name.firstName();
-		const lastName = faker.name.lastName();
-		const randomNumber = faker.datatype.number(100);
-		const name = `${firstName} ${lastName}`;
-		const email = `${firstName}.${lastName}${randomNumber}@${FAKE_EMAIL_DOMAIN}`;
+		const generatedUser = generateUser();
 
-		generatedUsers.push({
-			name,
-			email,
-			shareClaimed: false,
-			shares: []
-		});
+		generatedUsers.push(generatedUser);
 	}
 
 	return generatedUsers;
 };
+
+export function generateUser(emailToUse?: string) {
+
+	const firstName = faker.name.firstName();
+	const lastName = faker.name.lastName();
+	const randomNumber = faker.datatype.number(100);
+	const name = `${firstName} ${lastName}`;
+	const email = emailToUse || `${firstName}.${lastName}${randomNumber}@${FAKE_EMAIL_DOMAIN}`;
+
+	return {
+		name,
+		email,
+		shareClaimed: false,
+		shares: []
+	};
+}
 
 export const insertUsersIntoDB = async (usersToInsert: UserAttributes[] = [], clearExisting: boolean = true) => {
 
