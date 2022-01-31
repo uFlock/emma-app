@@ -1,6 +1,6 @@
 import faker from "faker";
 
-import { User, UserAttributes } from "../models/user";
+import { User, UserAttributes } from "../../models/user";
 
 const fakeRewardAccountPositions = [
 	{ tickerSymbol: "AABZZ", quantity: 4, sharePrice: 5, },

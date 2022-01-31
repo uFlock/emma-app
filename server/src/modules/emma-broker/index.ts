@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 import { User } from "../../models/user";
-import { FAKE_REWARDS_ACCOUNT } from "../../utils/start-up-data-populator";
+import { FAKE_REWARDS_ACCOUNT } from "../data-populator";
 import { Transaction, TRANSACTION_TYPES } from "../../models/transaction";
 
 import { fakeMarket } from "./fake-market";
