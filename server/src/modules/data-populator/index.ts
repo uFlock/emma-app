@@ -1,20 +1,7 @@
 import faker from "faker";
 
 import { User, UserAttributes } from "../../models/user";
-
-const fakeRewardAccountPositions = [
-	{ tickerSymbol: "AABZZ", quantity: 4, sharePrice: 5, },
-	{ tickerSymbol: "ABCZZ", quantity: 7, sharePrice: 15, },
-	{ tickerSymbol: "ACBZZ", quantity: 10, sharePrice: 100, }
-];
-
-export const FAKE_EMAIL_DOMAIN = "fake-example.con";
-export const FAKE_REWARDS_ACCOUNT: UserAttributes = {
-	name: "REWARDS_ACCOUNT",
-	email: `REWARDS_ACCOUNT@${FAKE_EMAIL_DOMAIN}`,
-	shareClaimed: true,
-	shares: fakeRewardAccountPositions
-};
+import { FAKE_EMAIL_DOMAIN, FAKE_REWARDS_ACCOUNT } from "../../constants";
 
 export const generateUsers = (numberOfUsers: number = 100) => {
 

@@ -1,13 +1,17 @@
 import mongoose, { Schema, Model, Document } from "mongoose";
 
 import { applyIdTransform } from "./utils/formatDocId";
-import { AvailableRewardAsset } from "../modules/emma-broker";
+
+export interface Asset {
+	tickerSymbol: string;
+	quantity: number;
+}
 
 export interface UserAttributes {
 	email: string;
 	name: string;
 	shareClaimed: boolean,
-	shares: AvailableRewardAsset[],
+	shares: Asset[],
 }
 
 export interface UserDocument extends UserAttributes, Document {}

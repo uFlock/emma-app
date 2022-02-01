@@ -1,4 +1,4 @@
-import { calculateOutcome, ChanceSettings, CHANCES_DO_NOT_ADD_UP_ERROR } from "./chanceCalculator";
+import { calculateOutcome, ChanceSettings, CHANCES_DO_NOT_ADD_UP_ERROR } from "./index";
 
 const VALID_PAYLOAD: ChanceSettings[] = [
 	{

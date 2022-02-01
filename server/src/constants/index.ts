@@ -1,9 +1,50 @@
-export const fakeMarket = [
-	{ tickerSymbol: 'AABZZ', sharePrice: 1 },
-	{ tickerSymbol: 'MMMZAC', sharePrice: 1 },
-	{ tickerSymbol: 'MMMZAD', sharePrice: 0.19 },
-	{ tickerSymbol: 'MMMZAE', sharePrice: 0.50 },
-	{ tickerSymbol: 'MMMZAF', sharePrice: 0.25 },
+import { UserAttributes } from "../models/user";
+
+export const FAKE_REWARDS_ACCOUNT_SHARE_POSITIONS = [
+	{ tickerSymbol: 'AABZZ', quantity: 1 },
+	{ tickerSymbol: 'MMMZAC', quantity: 1 },
+	{ tickerSymbol: 'MMMZAD', quantity: 1 },
+	{ tickerSymbol: 'MMMZAE', quantity: 1 },
+	{ tickerSymbol: 'MMMZAF', quantity: 1 },
+	{ tickerSymbol: 'CHK', quantity: 1 },
+	{ tickerSymbol: 'MMMZAA', quantity: 1 },
+	{ tickerSymbol: 'MMMZA', quantity: 1 },
+	{ tickerSymbol: 'MMMZAB', quantity: 1 },
+	{ tickerSymbol: 'UA', quantity: 1 },
+	{ tickerSymbol: 'RRC', quantity: 1 },
+	{ tickerSymbol: 'UAA', quantity: 1 },
+	{ tickerSymbol: 'NAVI', quantity: 1 },
+	{ tickerSymbol: 'KIM', quantity: 1 },
+	{ tickerSymbol: 'GE', quantity: 1 },
+	{ tickerSymbol: 'HPE', quantity: 1 },
+	{ tickerSymbol: 'HBAN', quantity: 1 },
+	{ tickerSymbol: 'CTAS', quantity: 1 },
+	{ tickerSymbol: 'ANSS', quantity: 1 },
+	{ tickerSymbol: 'SYK', quantity: 1 },
+	{ tickerSymbol: 'IBM', quantity: 1 },
+	{ tickerSymbol: 'HON', quantity: 1 },
+	{ tickerSymbol: 'CAT', quantity: 1 },
+	{ tickerSymbol: 'AYI', quantity: 1 },
+	{ tickerSymbol: 'NEE', quantity: 1 },
+	{ tickerSymbol: 'PX', quantity: 1 },
+	{ tickerSymbol: 'PVH', quantity: 1 },
+];
+
+export const FAKE_EMAIL_DOMAIN = "fake-example.con";
+
+export const FAKE_REWARDS_ACCOUNT: UserAttributes = {
+	name: "REWARDS_ACCOUNT",
+	email: `REWARDS_ACCOUNT@${FAKE_EMAIL_DOMAIN}`,
+	shareClaimed: true,
+	shares: FAKE_REWARDS_ACCOUNT_SHARE_POSITIONS
+};
+
+export const FAKE_MARKET = [
+	{ tickerSymbol: 'AABZZ', sharePrice: 3 },
+	{ tickerSymbol: 'MMMZAC', sharePrice: 3 },
+	{ tickerSymbol: 'MMMZAD', sharePrice: 5 },
+	{ tickerSymbol: 'MMMZAE', sharePrice: 5 },
+	{ tickerSymbol: 'MMMZAF', sharePrice: 4 },
 	{ tickerSymbol: 'CHK', sharePrice: 2.82 },
 	{ tickerSymbol: 'MMMZAA', sharePrice: 4.5 },
 	{ tickerSymbol: 'MMMZA', sharePrice: 5.22 },

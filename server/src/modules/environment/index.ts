@@ -1,13 +1,28 @@
-"use strict"
+"use strict";
+
+import { ChanceSettings } from "../../utils/chance-calculator";
 
 export const getServerConfig = () => environment.server;
 export const getCorsPolicy = () => environment.corsPolicy;
 export const getMongoConfig = () => environment.mongo;
+export const getReferralsConfig = () => environment.referrals;
 
 const requiredEnvVariables = [
 	'ALLOW_CORS_ORIGIN',
 	'MONGO_URI',
-	'PORT'
+	'PORT',
+
+	'CHANCE1',
+	'MIN1',
+	'MAX1',
+
+	'CHANCE2',
+	'MIN2',
+	'MAX2',
+
+	'CHANCE3',
+	'MIN3',
+	'MAX3',
 ];
 
 export const validateEnvironment = () => requiredEnvVariables
@@ -23,6 +38,9 @@ interface EnvironmentVariables {
 	corsPolicy: {
 		allowOrigin: string
 	},
+	referrals: {
+		chances: ChanceSettings[]
+	}
 }
 
 const environment: EnvironmentVariables = {
@@ -34,14 +52,36 @@ const environment: EnvironmentVariables = {
 	},
 	corsPolicy: {
 		allowOrigin: process.env.ALLOW_CORS_ORIGIN || 'http://localhost:8080'
+	},
+	referrals: {
+		chances: [
+			{
+				chance: +process.env.CHANCE1!,
+				result: {
+					min: +process.env.MIN1!,
+					max: +process.env.MAX1!
+				}
+			},
+			{
+				chance: +process.env.CHANCE2!,
+				result: {
+					min: +process.env.MIN2!,
+					max: +process.env.MAX2!
+				}
+			},
+			{
+				chance: +process.env.CHANCE3!,
+				result: {
+					min: +process.env.MIN3!,
+					max: +process.env.MAX3!
+				}
+			},
+		]
 	}
 };
 
 function validateEnvVariable(envVariableName: string) {
-
-	if (!process.env[envVariableName]) {
-		throwEnvError(envVariableName);
-	}
+	if (!process.env[envVariableName]) throwEnvError(envVariableName);
 }
 
 function throwEnvError(envVariableName: string) {

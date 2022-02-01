@@ -37,3 +37,5 @@ export const checkAllChancesAddUpTo100 = (payload: ChanceSettings[]) => {
 
 	if (totalPercent !== 100) throw new Error(CHANCES_DO_NOT_ADD_UP_ERROR);
 };
+
+export const getRandomInt = (max: number) => Math.floor(Math.random() * max);
