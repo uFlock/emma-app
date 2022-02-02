@@ -30,7 +30,6 @@ const INVALID_PAYLOAD: ChanceSettings[] = [
 	},
 ];
 
-
 describe(`test chance calculation`, () => {
 
 

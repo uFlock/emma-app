@@ -1,15 +1,15 @@
+import { Express } from 'express';
+
 import createCors from "cors";
 import bodyParser from "body-parser";
 
-import { Express } from 'express';
-
 import { getCorsPolicy } from "../modules/environment";
 
+import { errorHandler } from "./error-handler";
 
 export { errorHandler } from './error-handler';
 export { validateBody } from './json-validator';
 export { validateRequest } from './validate-request';
-import { errorHandler } from "./error-handler";
 
 export function setupCors(app: Express) {
 
@@ -30,6 +30,3 @@ export function setupBodyParser(app: Express) {
 export function setupErrorHandler(app: Express) {
 	app.use(errorHandler);
 }
-
-
-

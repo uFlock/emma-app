@@ -1,0 +1,1 @@
+export const TEST_USER_EMAIL = "test@email.com";

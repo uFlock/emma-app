@@ -39,11 +39,17 @@ export const FAKE_REWARDS_ACCOUNT: UserAttributes = {
 	shares: FAKE_REWARDS_ACCOUNT_SHARE_POSITIONS
 };
 
+export const FAKE_BROKER = "BROKER";
+
 export const FAKE_MARKET = [
-	{ tickerSymbol: 'AABZZ', sharePrice: 3 },
-	{ tickerSymbol: 'MMMZAC', sharePrice: 3 },
-	{ tickerSymbol: 'MMMZAD', sharePrice: 5 },
-	{ tickerSymbol: 'MMMZAE', sharePrice: 5 },
+	{ tickerSymbol: 'AABZZ', sharePrice: 0.25 },
+	{ tickerSymbol: 'MMMZAC', sharePrice: 0.50 },
+	{ tickerSymbol: 'MMMZAD', sharePrice: 0.75 },
+	{ tickerSymbol: 'MMMZAE', sharePrice: 1 },
+	{ tickerSymbol: 'AABZZA', sharePrice: 2 },
+	{ tickerSymbol: 'MMMZAL', sharePrice: 3 },
+	{ tickerSymbol: 'MMMZAK', sharePrice: 6 },
+	{ tickerSymbol: 'MMMZAM', sharePrice: 5 },
 	{ tickerSymbol: 'MMMZAF', sharePrice: 4 },
 	{ tickerSymbol: 'CHK', sharePrice: 2.82 },
 	{ tickerSymbol: 'MMMZAA', sharePrice: 4.5 },

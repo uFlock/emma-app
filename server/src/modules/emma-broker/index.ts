@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 import { Asset, User } from "../../models/user";
-import { FAKE_REWARDS_ACCOUNT } from "../../constants";
+import { FAKE_BROKER, FAKE_REWARDS_ACCOUNT } from "../../constants";
 import { Transaction, TRANSACTION_TYPES } from "../../models/transaction";
 
 import { FAKE_MARKET } from "../../constants";
@@ -44,7 +44,8 @@ export interface MoveShareToAccountResponse {
 export class Broker {
 
 	// To fetch a list of assets available for trading
-	public listTradableAssets = async () => FAKE_MARKET.map(asset => ({ tickerSymbol: asset.tickerSymbol }));
+	public listTradableAssets = async () => FAKE_MARKET.map(asset =>
+		({ tickerSymbol: asset.tickerSymbol }));
 
 	// To fetch the latest price for an asset
 	public getLatestPrice = async (tickerSymbol: string): Promise<TickerPrice> => FAKE_MARKET
@@ -55,7 +56,7 @@ export class Broker {
 	// market never sleeps
 	public isMarketOpen = async (): Promise<MarketClosureStatus> => ({
 		open: true,
-		nextOpeningTime: DateTime.now().toISO(),
+		nextOpeningTime: DateTime.now().minus({ hour: 24 }).toISO(),
 		nextClosingTime: DateTime.now().plus({ hour: 8 }).toISO()
 	});
 
@@ -77,7 +78,7 @@ export class Broker {
 
 		const payload: CreateTransactionPayload = {
 			type: TRANSACTION_TYPES.BUY,
-			fromAccount: "BROKER",
+			fromAccount: FAKE_BROKER,
 			toAccount: FAKE_REWARDS_ACCOUNT.email,
 			tickerSymbol,
 			unitPrice,

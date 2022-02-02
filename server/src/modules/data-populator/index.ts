@@ -40,13 +40,15 @@ export const insertUsersIntoDB = async (usersToInsert: UserAttributes[] = [], cl
 	clearExisting && await User.deleteMany({});
 
 	for (let userToInsert of usersToInsert) {
-		await User
-			.build(userToInsert)
-			.save();
+		await insertUserIntoDB(userToInsert);
 	}
 
 	return User.find({});
 };
+
+export const insertUserIntoDB = async (userToInsert: UserAttributes) => await User
+	.build(userToInsert)
+	.save();
 
 export const populateUsers = async (numberOfUsers: number = 100, clearExisting: boolean = true) => {
 
@@ -55,9 +57,8 @@ export const populateUsers = async (numberOfUsers: number = 100, clearExisting: 
 	return insertUsersIntoDB(usersToInsert, clearExisting);
 };
 
-export const createRewardsAccount = async (clearExisting: boolean = true) => {
-	return insertUsersIntoDB([FAKE_REWARDS_ACCOUNT], clearExisting);
-};
+export const createRewardsAccount = async (fakeRewardsAccount?: UserAttributes) =>
+	insertUserIntoDB(fakeRewardsAccount || FAKE_REWARDS_ACCOUNT);
 
 export const emptyDB = async () => {
 
