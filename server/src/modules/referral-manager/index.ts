@@ -2,42 +2,56 @@ import { UserAttributes } from "../../models/user";
 import { Transaction, TRANSACTION_TYPES } from "../../models/transaction";
 import { getRandomItemFromArray, toFloat } from "../../utils/common";
 
-import { calculateOutcome } from "../chance-calculator";
+import { calculateOutcome, ChanceSettings } from "../chance-calculator";
 import { Broker, Ticker, TickerPrice } from "../emma-broker";
-import { getReferralsConfig } from "../environment";
 
 const broker = new Broker();
 
-export async function awardReferralShare(user: UserAttributes, minCpaSharePrice?: number) {
-
-	const config = getReferralsConfig();
-
-	const CPA = config.cpa.value;
-	const MIN_CPA_SHARE_PRICE = config.cpa.minCpaSharePrice;
-
-	return CPA ?
-		await awardShareToUserUsingCPA(user, minCpaSharePrice || MIN_CPA_SHARE_PRICE) :
-		await awardShareToUserUsingPercentSettings(user);
+export interface AwardReferralShareProps {
+	user: UserAttributes;
+	CPA?: number;
+	minCpaSharePrice?: number;
+	chances: ChanceSettings[];
 }
 
-export async function awardShareToUserUsingPercentSettings(user: UserAttributes) {
+export enum REFERRAL_ALGORITHMS {
+	CPA = "CPA",
+	PERCENTAGE = "PERCENTAGE"
+}
 
-	const outcome = calculateOutcome(getReferralsConfig().chances);
+export const CPA_VALUE_ERROR = "CPA target bust be a positive number";
+export const MIN_CPA_SHARE_PRICE_ERROR = "minCpaSharePrice bust be a positive number";
+
+export async function awardReferralShare(props: AwardReferralShareProps) {
+
+	const { user, chances, CPA, minCpaSharePrice } = props;
+
+	return CPA ?
+		await awardShareToUserUsingCPA(user, CPA, minCpaSharePrice) :
+		await awardShareToUserUsingPercentSettings(user, chances);
+}
+
+export async function awardShareToUserUsingPercentSettings(user: UserAttributes, chances: ChanceSettings[]) {
+
+	const outcome = calculateOutcome(chances);
 	const { min, max } = outcome.result;
 
 	const shareAwarded = await awardShareToUserInPriceRange(user, min, max);
 
-	return { outcome, shareAwarded };
+	return { algorithm: REFERRAL_ALGORITHMS.PERCENTAGE, outcome, shareAwarded };
 }
 
-export async function awardShareToUserUsingCPA(user: UserAttributes, minCpaSharePrice = 3) {
+export async function awardShareToUserUsingCPA(user: UserAttributes, CPA: number, minCpaSharePrice = 3) {
+
+	validateCpaValue(CPA);
+	validateMinCpaSharePrice(minCpaSharePrice);
 
 	const referralAggregation = await getReferralTransactionsAggregation();
-	const { currentCpa, targetCpa, allowedMaxPrice } = calculateCpaValues(referralAggregation);
+	const { currentCpa, targetCpa, allowedMaxPrice } = calculateCpaValues(referralAggregation, CPA);
 
 	const shareAwarded = await awardShareToUserInPriceRange(user, minCpaSharePrice, allowedMaxPrice);
 
-	return { referralAggregation, currentCpa, targetCpa, allowedMaxPrice, shareAwarded };
+	return { algorithm: REFERRAL_ALGORITHMS.CPA, referralAggregation, currentCpa, targetCpa, allowedMaxPrice, shareAwarded };
 }
 
 async function getReferralTransactionsAggregation() {
@@ -62,9 +76,7 @@ async function getReferralTransactionsAggregation() {
 	return referralTransactions[0];
 }
 
-function calculateCpaValues(referralAggregation: { numberOfTransactions: number, totalValue: number } | undefined) {
-
-	const CPA = getReferralsConfig().cpa.value;
+function calculateCpaValues(referralAggregation: { numberOfTransactions: number, totalValue: number }, CPA: number) {
 
 	const cpaAdjustment = referralAggregation ? CPA : 0; //don't adjust the very first claim
 	const defaultReferralAggregation = { numberOfTransactions: 1, totalValue: 0 };
@@ -110,4 +122,12 @@ async function buyRandomShareInPriceRange(user: UserAttributes, min: number, max
 function getSharesInPriceRange(pricedTickers: (Ticker & TickerPrice)[], min: number, max: number) {
 	return pricedTickers.filter(share =>
 		share.sharePrice >= min && share.sharePrice <= max);
+}
+
+function validateCpaValue(CPA?: number) {
+	if (!!CPA && CPA < 0)  throw new Error(CPA_VALUE_ERROR);
+}
+
+function validateMinCpaSharePrice(minCpaSharePrice?: number) {
+	if (!!minCpaSharePrice && minCpaSharePrice < 0)  throw new Error(MIN_CPA_SHARE_PRICE_ERROR);
 }

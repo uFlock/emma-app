@@ -1,34 +1,5 @@
-import { calculateOutcome, ChanceSettings, CHANCES_DO_NOT_ADD_UP_ERROR } from "./index";
-
-const VALID_PAYLOAD: ChanceSettings[] = [
-	{
-		chance: 95,
-		result: { min: 3, max: 10 }
-	},
-	{
-		chance: 3,
-		result: { min: 10, max: 25 }
-	},
-	{
-		chance: 2,
-		result: { min: 25, max: 200 }
-	},
-];
-
-const INVALID_PAYLOAD: ChanceSettings[] = [
-	{
-		chance: 94,
-		result: { min: 3, max: 10 }
-	},
-	{
-		chance: 3,
-		result: { min: 10, max: 25 }
-	},
-	{
-		chance: 2,
-		result: { min: 25, max: 200 }
-	},
-];
+import { calculateOutcome, CHANCES_DO_NOT_ADD_UP_ERROR } from "./index";
+import { INVALID_CHANCES_PAYLOAD, VALID_CHANCES_PAYLOAD } from "../../test/constants";
 
 describe(`test chance calculation`, () => {
 
@@ -40,7 +11,7 @@ describe(`test chance calculation`, () => {
 		//simulate chance n times
 		for (let i = 0; i < 1000000; i++) {
 
-			const result = calculateOutcome(VALID_PAYLOAD);
+			const result = calculateOutcome(VALID_CHANCES_PAYLOAD);
 
 			chanceDistribution[result.chance] = chanceDistribution[result.chance] ?
 				chanceDistribution[result.chance] + 1 :
@@ -48,7 +19,7 @@ describe(`test chance calculation`, () => {
 		}
 
 		//check chance distribution
-		VALID_PAYLOAD.forEach(chanceSetting => {
+		VALID_CHANCES_PAYLOAD.forEach(chanceSetting => {
 
 			const normalisedChanceDistributionOutcome = chanceDistribution[chanceSetting.chance] / 10000;
 
@@ -61,7 +32,7 @@ describe(`test chance calculation`, () => {
 	});
 
 	it(`throws and error if all chances don't add up to 100`, () =>
-		expect(() => calculateOutcome(INVALID_PAYLOAD))
+		expect(() => calculateOutcome(INVALID_CHANCES_PAYLOAD))
 			.toThrow(CHANCES_DO_NOT_ADD_UP_ERROR)
 	);
 });

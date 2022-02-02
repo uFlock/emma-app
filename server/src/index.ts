@@ -18,6 +18,8 @@ async function startServer(): Promise<void> {
 	try {
 
 		await connectToMongo();
+
+		// pre-populate data
 		await emptyDB(); //clear database on restart
 		await createRewardsAccount();
 

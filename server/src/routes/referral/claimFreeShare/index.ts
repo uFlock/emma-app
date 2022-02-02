@@ -4,6 +4,7 @@ import { generateUser } from "../../../modules/data-populator";
 import { validateBody } from "../../../middlewares";
 import { awardReferralShare } from "../../../modules/referral-manager";
 import { User } from "../../../models/user";
+import { getReferralsConfig } from "../../../modules/environment";
 
 import { schema } from "./routeSchema";
 
@@ -20,7 +21,14 @@ async function routeHandler(req: Request, res: Response) {
 
 	const user = await getOrCreateUser(email);
 
-	const result = await awardReferralShare(user);
+	const { cpa: { minCpaSharePrice, value: CPA }, chances } = getReferralsConfig();
+
+	const result = await awardReferralShare({
+		user,
+		minCpaSharePrice,
+		CPA,
+		chances
+	});
 
 	res.send(result);
 }
