@@ -3,6 +3,7 @@ import mongoose, { Mongoose } from "mongoose";
 
 import { app } from "./app";
 import { getMongoConfig, getServerConfig, validateEnvironment } from "./modules/environment";
+import { createRewardsAccount, emptyDB } from "./modules/data-populator";
 
 validateEnvironment();
 
@@ -17,6 +18,8 @@ async function startServer(): Promise<void> {
 	try {
 
 		await connectToMongo();
+		await emptyDB(); //clear database on restart
+		await createRewardsAccount();
 
 		const server = app.listen(SERVER_CONFIG);
 

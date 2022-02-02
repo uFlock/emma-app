@@ -31,8 +31,11 @@
 	"jest": {
 		"preset": "ts-jest",
 		"testEnvironment": "node",
+		"setupFiles": [
+			"./src/test/setupEnvironment.ts"
+		],
 		"setupFilesAfterEnv": [
-			"./src/test/setup.ts"
+			"./src/test/setupTests.ts"
 		]
 	},
 	"devDependencies": {

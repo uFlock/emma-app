@@ -66,5 +66,3 @@ describe(`test chance calculation`, () => {
 			.toThrow(CHANCES_DO_NOT_ADD_UP_ERROR)
 	);
 });
-
-

@@ -1,7 +1,8 @@
 import faker from "faker";
 
-import { User, UserAttributes } from "../../models/user";
 import { FAKE_EMAIL_DOMAIN, FAKE_REWARDS_ACCOUNT } from "../../constants";
+import { User, UserAttributes } from "../../models/user";
+import { Transaction } from "../../models/transaction";
 
 export const generateUsers = (numberOfUsers: number = 100) => {
 
@@ -56,4 +57,14 @@ export const populateUsers = async (numberOfUsers: number = 100, clearExisting: 
 
 export const createRewardsAccount = async (clearExisting: boolean = true) => {
 	return insertUsersIntoDB([FAKE_REWARDS_ACCOUNT], clearExisting);
+};
+
+export const emptyDB = async () => {
+
+	console.log("Clearing DB Data...");
+
+	await User.deleteMany({});
+	await Transaction.deleteMany({});
+
+	console.log("Data Deleted...");
 };

@@ -1,11 +1,6 @@
 "use strict";
 
-import { ChanceSettings } from "../../utils/chance-calculator";
-
-export const getServerConfig = () => environment.server;
-export const getCorsPolicy = () => environment.corsPolicy;
-export const getMongoConfig = () => environment.mongo;
-export const getReferralsConfig = () => environment.referrals;
+import { ChanceSettings } from "../chance-calculator";
 
 const requiredEnvVariables = [
 	'ALLOW_CORS_ORIGIN',
@@ -25,60 +20,71 @@ const requiredEnvVariables = [
 	'MAX3',
 ];
 
-export const validateEnvironment = () => requiredEnvVariables
-	.forEach(variable => validateEnvVariable(variable));
-
-interface EnvironmentVariables {
-	server: {
-		port: number;
-	}
-	mongo: {
-		uri: string,
-	}
-	corsPolicy: {
-		allowOrigin: string
-	},
-	referrals: {
-		chances: ChanceSettings[]
-	}
+export interface ServerEnv {
+	port: number
 }
 
-const environment: EnvironmentVariables = {
-	server: {
-		port: (process.env.PORT as unknown as number | undefined) || 3000
-	},
-	mongo: {
-		uri: process.env.MONGO_URI || 'mongodb://mongo-db:27017',
-	},
-	corsPolicy: {
-		allowOrigin: process.env.ALLOW_CORS_ORIGIN || 'http://localhost:8080'
-	},
-	referrals: {
-		chances: [
-			{
-				chance: +process.env.CHANCE1!,
-				result: {
-					min: +process.env.MIN1!,
-					max: +process.env.MAX1!
-				}
-			},
-			{
-				chance: +process.env.CHANCE2!,
-				result: {
-					min: +process.env.MIN2!,
-					max: +process.env.MAX2!
-				}
-			},
-			{
-				chance: +process.env.CHANCE3!,
-				result: {
-					min: +process.env.MIN3!,
-					max: +process.env.MAX3!
-				}
-			},
-		]
+export interface MongoEnv {
+	uri: string
+}
+
+export interface CorsEnv {
+	allowOrigin: string
+}
+
+export interface ReferralsEnv {
+	chances: ChanceSettings[];
+	cpa: {
+		value: number
+		minCpaSharePrice: number
+	};
+}
+
+export const getServerConfig = (): ServerEnv => ({
+	port: (process.env.PORT as unknown as number | undefined) || 3000
+});
+
+export const getCorsPolicy = (): CorsEnv => ({
+	allowOrigin: process.env.ALLOW_CORS_ORIGIN || 'http://localhost:8080'
+});
+
+export const getMongoConfig = (): MongoEnv => ({
+	uri: process.env.MONGO_URI || 'mongodb://mongo-db:27017',
+});
+
+export const getReferralsConfig = (): ReferralsEnv => ({
+	chances: [
+		{
+			chance: +process.env.CHANCE1!,
+			result: {
+				min: +process.env.MIN1!,
+				max: +process.env.MAX1!
+			}
+		},
+		{
+			chance: +process.env.CHANCE2!,
+			result: {
+				min: +process.env.MIN2!,
+				max: +process.env.MAX2!
+			}
+		},
+		{
+			chance: +process.env.CHANCE3!,
+			result: {
+				min: +process.env.MIN3!,
+				max: +process.env.MAX3!
+			}
+		},
+	],
+	cpa: {
+		value: +(process.env.CPA || 0),
+		minCpaSharePrice: +(process.env.MIN_CPA_SHARE_COST || 3),
 	}
-};
+});
+
+
+export const validateEnvironment = () => requiredEnvVariables
+	.forEach(variable => validateEnvVariable(variable));
 
 function validateEnvVariable(envVariableName: string) {
 	if (!process.env[envVariableName]) throwEnvError(envVariableName);

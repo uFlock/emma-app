@@ -1,6 +1,7 @@
 import request from "supertest";
 
 import { app } from '../../../app';
+import { createRewardsAccount } from "../../../modules/data-populator";
 
 const ENDPOINT = `/claim-free-share`;
 
@@ -14,16 +15,14 @@ const INVALID_DEFAULT_PAYLOAD_WRONG_EMAIL_SCHEMA = {
 
 describe(`${ENDPOINT} route`, () => {
 
-	it(`returns 200 and posted email when schema matches`, async () => {
+	it(`returns 200 when email schema matches`, async () => {
 
-		const emailToExpect = VALID_DEFAULT_PAYLOAD.email;
+		await createRewardsAccount();
 
-		const response = await request(app)
+		await request(app)
 			.post(ENDPOINT)
 			.send(VALID_DEFAULT_PAYLOAD)
 			.expect(200);
-
-		expect(response.body?.email).toEqual(emailToExpect);
 	});
 
 	it(`returns 400 if email is in invalid format`, async () => {
