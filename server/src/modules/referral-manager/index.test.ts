@@ -138,6 +138,8 @@ describe(`Test referral-manager module`, () => {
 
 	it(`awardShareToUserUsingCPA() - actual CPA trends towards target CPA over 100+ awards`, async () => {
 
+		jest.setTimeout(60000);
+
 		const sharesToAward = 150;
 		const acceptableCpaDeviationFromTarget = 5; //5%
 
@@ -154,6 +156,8 @@ describe(`Test referral-manager module`, () => {
 	});
 
 	it(`awardShareToUserUsingCPA() there should be shares awarded over CPA value`, async () => {
+
+		jest.setTimeout(60000);
 
 		const sharesToAward = 150;
 
