@@ -138,8 +138,6 @@ describe(`Test referral-manager module`, () => {
 
 	it(`awardShareToUserUsingCPA() - actual CPA trends towards target CPA over 100+ awards`, async () => {
 
-		jest.setTimeout(60000);
-
 		const sharesToAward = 150;
 		const acceptableCpaDeviationFromTarget = 5; //5%
 
@@ -153,11 +151,10 @@ describe(`Test referral-manager module`, () => {
 		const cpaDeviationFromTarget = 100 - (currentCpa / targetCpa * 100);
 
 		expect(cpaDeviationFromTarget).toBeLessThanOrEqual(acceptableCpaDeviationFromTarget);
-	});
+
+	}, 60000);
 
 	it(`awardShareToUserUsingCPA() there should be shares awarded over CPA value`, async () => {
-
-		jest.setTimeout(60000);
 
 		const sharesToAward = 150;
 
@@ -171,7 +168,7 @@ describe(`Test referral-manager module`, () => {
 		});
 
 		expect(result.length).toBeGreaterThan(0);
-	});
+	}, 60000);
 
 	it(`awardShareToUserUsingCPA() throws error if CPA negative number`, async () => {
 
