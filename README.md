@@ -111,7 +111,7 @@ In that case the only adjustments that need to be made are:
   ArrayOfDesirable shares, and then calculates the fraction that needs to be awarded, checks if the rewardsAccount already has that fraction of that
 share and then will either award or buy/award the needed fraction of the share.
 * `awardFractionalShareToUserInPriceRange()` and `buyRandomFractionalShareInPriceRange()` are going to be invoked by
-  `awardFractionalShareToUserInPriceRange()`/`buyRandomFractionalShareInPriceRange()` respectively based on the fractionalLogic Flag.
+  `awardFractionalShareToUserInPriceRange()`/`buyRandomFractionalShareInPriceRange()` respectively based on the fractional logic flag.
 
 ### ✨ Some Guidance/Explanation for Assessing Persons
 
