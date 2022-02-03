@@ -115,10 +115,10 @@ share and then will either award or buy/award the needed fraction of the share.
 
 > For simplicity of assessing the algorithms it was decided to allow for the same user to claim infinite
 > amount of shares (**user** has `shareClaimed: TRUE | FALSE` flag, but it is not used by the system),
-> as it was assumed that the purpose of the exercise is to concentrate on referral logic.
+> as it was assumed that the purpose of the exercise is to concentrate on referral award logic.
 
 > From the above assumption it was decided not to bother with registration nor user management -
-> the first time you hit the endpoint with validly formatted email the system will create a user if user
+> the first time you hit the endpoint with validly formatted email the system will create a user if the user
 > doesn't exist, so it is safe to use any email to test the algorithms.
 
 > The system uses MongoDB to store user, rewardAccount and transaction data.
