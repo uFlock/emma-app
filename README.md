@@ -16,8 +16,7 @@ A simple Node.js api-server that implements 2 separate referral award algorithms
 
 ### 🚧 Project prerequisites
 
-1. Node + NPM - get the latest LTS version from [here](https://nodejs.org/en/). I would strongly recommend using NVM (
-   Node Version Manager).
+1. Node + NPM - get the latest LTS version from [here](https://nodejs.org/en/). I would strongly recommend using NVM (Node Version Manager).
 2. [Docker](https://docs.docker.com/get-docker/) - Please follow the instructions for your respective platform.
 3. The demo is designed to run on localhost so please make sure ports `3000` and `27017`
    are not taken by any other process on your dev machine. You can adjust port settings in corresponding `.env`
