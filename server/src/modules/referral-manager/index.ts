@@ -19,8 +19,8 @@ export enum REFERRAL_ALGORITHMS {
 	PERCENTAGE = "PERCENTAGE"
 }
 
-export const CPA_VALUE_ERROR = "CPA target bust be a positive number";
-export const MIN_CPA_SHARE_PRICE_ERROR = "minCpaSharePrice bust be a positive number";
+export const CPA_VALUE_ERROR = "CPA target must be a positive number";
+export const MIN_CPA_SHARE_PRICE_ERROR = "minCpaSharePrice must be a positive number";
 export const CPA_CAN_NOT_BE_LESS_THAN_MIN_PRICE_ERROR = "CPA can't be less than minCpaSharePrice";
 export const NO_SHARE_IN_PRICE_RANGE_ON_THE_MARKET_ERROR = "No shares matching the price range on the market";
 
