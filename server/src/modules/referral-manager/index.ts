@@ -40,7 +40,7 @@ export async function awardShareToUserUsingPercentSettings(user: UserAttributes,
 
 	const shareAwarded = await awardShareToUserInPriceRange(user, min, max);
 
-	return { algorithm: REFERRAL_ALGORITHMS.PERCENTAGE, outcome, shareAwarded };
+	return { algorithm: REFERRAL_ALGORITHMS.PERCENTAGE, shareAwarded, details: { outcome } };
 }
 
 export async function awardShareToUserUsingCPA(user: UserAttributes, CPA: number, minCpaSharePrice = 3) {
@@ -54,11 +54,13 @@ export async function awardShareToUserUsingCPA(user: UserAttributes, CPA: number
 
 	return {
 		algorithm: REFERRAL_ALGORITHMS.CPA,
-		referralAggregation,
-		currentCpa,
-		targetCpa,
-		allowedMaxPrice,
-		shareAwarded
+		shareAwarded,
+		details: {
+			referralAggregation,
+			currentCpa,
+			targetCpa,
+			allowedMaxPrice
+		}
 	};
 }
 

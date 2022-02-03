@@ -15,9 +15,11 @@ import { createRewardsAccount } from "../data-populator";
 import {
 	awardReferralShare,
 	awardShareToUserUsingCPA,
-	awardShareToUserUsingPercentSettings, CPA_CAN_NOT_BE_LESS_THAN_MIN_PRICE_ERROR,
+	awardShareToUserUsingPercentSettings,
+	CPA_CAN_NOT_BE_LESS_THAN_MIN_PRICE_ERROR,
 	CPA_VALUE_ERROR,
-	MIN_CPA_SHARE_PRICE_ERROR, NO_SHARE_IN_PRICE_RANGE_ON_THE_MARKET_ERROR,
+	MIN_CPA_SHARE_PRICE_ERROR,
+	NO_SHARE_IN_PRICE_RANGE_ON_THE_MARKET_ERROR,
 	REFERRAL_ALGORITHMS
 } from "./index";
 
@@ -37,14 +39,17 @@ const awardAmountOfSharesCPA = async (numberOfShares: number, user: UserAttribut
 
 describe(`Test referral-manager module`, () => {
 
-	it(`awardShareToUserUsingPercentSettings() returns { outcome, shareAwarded }`, async () => {
+	it(`awardShareToUserUsingPercentSettings() returns { algorithm, details, shareAwarded }`, async () => {
 
 		const { testUser } = await setupTest();
 
 		const result = await awardShareToUserUsingPercentSettings(testUser, VALID_CHANCES_PAYLOAD);
 
-		expect(result.outcome).toBeDefined();
-		expect(result.shareAwarded).toBeDefined();
+		const { algorithm, shareAwarded, details: { outcome } } = result;
+
+		expect(algorithm).toBeDefined();
+		expect(outcome).toBeDefined();
+		expect(shareAwarded).toBeDefined();
 	});
 
 	it(`awardShareToUserUsingPercentSettings() awards share in the correct price range`, async () => {
@@ -53,8 +58,7 @@ describe(`Test referral-manager module`, () => {
 
 		const result = await awardShareToUserUsingPercentSettings(testUser, VALID_CHANCES_PAYLOAD);
 
-		const outcome = result.outcome;
-		const shareAwarded = result.shareAwarded;
+		const { shareAwarded, details: { outcome } } = result;
 		const { min, max } = outcome.result;
 
 		expect(shareAwarded.sharePrice).toBeGreaterThanOrEqual(min);
@@ -68,7 +72,7 @@ describe(`Test referral-manager module`, () => {
 		const awardResult = await awardShareToUserUsingPercentSettings(testUser, VALID_CHANCES_PAYLOAD);
 		const updatedUser = await User.findOne({ email: testUser.email });
 
-		const shareAwarded = awardResult.shareAwarded;
+		const { shareAwarded } = awardResult;
 		const sharesHeld = updatedUser!.shares;
 
 		expect(sharesHeld.length).toBe(1);
@@ -86,7 +90,8 @@ describe(`Test referral-manager module`, () => {
 		while ([...new Set(resultOutcomes)].length !== numberOrPossibleRanges) {
 
 			const awardResult = await awardShareToUserUsingPercentSettings(testUser, VALID_CHANCES_PAYLOAD);
-			const { outcome, shareAwarded } = awardResult;
+
+			const { shareAwarded, details: { outcome } } = awardResult;
 
 			resultOutcomes.push(outcome.chance);
 
@@ -99,30 +104,31 @@ describe(`Test referral-manager module`, () => {
 
 		const { testUser } = await setupTest();
 
-
 		await expect(async () => await awardShareToUserUsingPercentSettings(testUser, INVALID_CHANCES_PAYLOAD_LOW_PRICE_RANGE))
 			.rejects
 			.toThrowError(NO_SHARE_IN_PRICE_RANGE_ON_THE_MARKET_ERROR);
-
 	});
 
-	it(`awardShareToUserUsingCPA() returns { referralAggregation?, currentCpa, targetCpa, allowedMaxPrice, shareAwarded }`, async () => {
+	it(`awardShareToUserUsingCPA() returns { algorithm, shareAwarded, details { referralAggregation?, currentCpa, targetCpa, allowedMaxPrice }}`, async () => {
 
 		const { testUser } = await setupTest();
 
 		const transactions = await Transaction.find({});
 		const result = await awardShareToUserUsingCPA(testUser, TEST_CPA, TEST_CPA_MIN_SHARE_PRICE);
 
-		//if no transactions present before award there's nothing to aggregate
-		transactions.length > 0 && expect(result.referralAggregation).toBeDefined();
+		const { algorithm , shareAwarded, details: { currentCpa, targetCpa, allowedMaxPrice, referralAggregation } } = result;
 
-		expect(result.currentCpa).toBeDefined();
-		expect(result.targetCpa).toBeDefined();
-		expect(result.allowedMaxPrice).toBeDefined();
-		expect(result.shareAwarded).toBeDefined();
+		//if no transactions present before award there's nothing to aggregate
+		transactions.length > 0 && expect(referralAggregation).toBeDefined();
+
+		expect(algorithm).toBeDefined();
+		expect(currentCpa).toBeDefined();
+		expect(targetCpa).toBeDefined();
+		expect(allowedMaxPrice).toBeDefined();
+		expect(shareAwarded).toBeDefined();
 	});
 
-	it(`awardShareToUserUsingCPA() returns { referralAggregation!, currentCpa, targetCpa, allowedMaxPrice, shareAwarded }`, async () => {
+	it(`awardShareToUserUsingCPA() returns { algorithm, shareAwarded, details { referralAggregation!, currentCpa, targetCpa, allowedMaxPrice }}`, async () => {
 
 		const { testUser } = await setupTest();
 
@@ -130,11 +136,14 @@ describe(`Test referral-manager module`, () => {
 
 		const result = await awardShareToUserUsingCPA(testUser, TEST_CPA, TEST_CPA_MIN_SHARE_PRICE);
 
-		expect(result.referralAggregation).toBeDefined();
-		expect(result.currentCpa).toBeDefined();
-		expect(result.targetCpa).toBeDefined();
-		expect(result.allowedMaxPrice).toBeDefined();
-		expect(result.shareAwarded).toBeDefined();
+		const { algorithm, shareAwarded, details } = result;
+
+		expect(algorithm).toBeDefined();
+		expect(shareAwarded).toBeDefined();
+		expect(details.referralAggregation).toBeDefined();
+		expect(details.currentCpa).toBeDefined();
+		expect(details.targetCpa).toBeDefined();
+		expect(details.allowedMaxPrice).toBeDefined();
 	});
 
 	it(`awardShareToUserUsingCPA() awards first share within the CPA target`, async () => {
@@ -160,7 +169,7 @@ describe(`Test referral-manager module`, () => {
 
 		const result = await awardShareToUserUsingCPA(testUser, TEST_CPA, TEST_CPA_MIN_SHARE_PRICE);
 
-		const { currentCpa, targetCpa } = result;
+		const { details: { currentCpa, targetCpa } } = result;
 		const cpaDeviationFromTarget = 100 - (currentCpa / targetCpa * 100);
 
 		expect(cpaDeviationFromTarget).toBeLessThanOrEqual(acceptableCpaDeviationFromTarget);
