@@ -75,6 +75,8 @@ describe(`${ENDPOINT} route`, () => {
 
 		const { details: { user } } = result.body;
 
+		console.log(JSON.stringify(result.body, null, 4));
+
 		expect(user).toBeDefined();
 		expect(user.email).toBe(VALID_DEFAULT_PAYLOAD.email);
 	});

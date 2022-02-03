@@ -5,7 +5,7 @@
 
 A simple Node.js api-server that implements 2 separate referral algorithms that award introduction when
 the `POST /claim-free-share` route is hit. All task details and requirements can be found by clicking the purple gummy
-icon above.
+bear icon above.
 
 ### ☀️ Project Features
 
@@ -88,5 +88,87 @@ CPA=0 # 0 means disabled any non 0 value enables CPA logic and disables Percenta
 MIN_CPA_SHARE_COST=3 # optional - defaults to 3 - minimum price share to award / must be positive number and below the CPA value
 ```
 
-### ⌛ Project Not Yet Complete... Still Working on It... Please Wait...
+### ✨ Some Guidance/Explanation for Assessing Persons
+
+> For simplicity of assessing the algorithms it was decided to allow for the same user to claim infinite
+> amount of shares (**user** has `shareClaimed: TRUE | FALSE` flag, but it is not used by the system),
+> as it was assumed that the purpose of the exercise is to concentrate on referral logic.
+
+> From the above assumption it was decided not to bother with registration nor user management -
+> the first time you hit the endpoint with validly formatted email the system will create a user if user
+> doesn't exist, so it is safe to use any email to test the algorithms.
+
+> The system uses MongoDB to store user, rewardAccount and transaction data.
+
+> It was assumed that you had to use the **Broker** module as is, as in you couldn't modify the
+> methods, **and you had to use them all** as is.
+
+> By mocking out the **Broker** module it was assumed - completely functional
+> implementation (albeit best naive implementation) with appropriate test coverage.
+
+> `POST /claim-free-share` route will return:
+```ts
+const result = { 
+   algorithm: PERCENTAGE | CPA, 
+   shareAwarded: { tickerSymbol: string, quantity: number, sharePrice: number },
+   details: DEPENDS_ON_THE_ALGORITHM_IN_USE
+};
+```
+
+> Depending on the algorithm enabled (see `.env.example` for more information) the call will return
+> a **details** block with debugging information.
+>
+**Percentage Algorithm details block**
+
+```ts
+const details = {
+   user: {
+      id: string,
+      email: string,
+      name: string,
+      shares: <{ tickerSymbol: string, quantity: number }>[],
+      shareClaimed: false //this is always false as is not used by the system
+   },
+   outcome: {
+      chance: number, //the chance that result was going to come up
+      result: { //actual price range outcome
+         min: number,
+         max: number
+      }
+   }
+};
+```
+
+**CPA Algorithm details block**:
+
+```ts
+const details = {
+	currentCpa: number, //current rolling CPA
+	targetCpa: number, //target CPA
+	allowedMaxPrice: number, //maximum value of the next awarded share
+	user: {
+		id: string,
+		email: string,
+		name: string,
+		shares: <{ tickerSymbol: string, quantity: number }>[],
+		shareClaimed: false //this is always false as is not used by the system
+	}
+};
+```
+
+> ⚠️ Data does not persist between the `server` restarts. 
+> Startup script will erase all data in the database on restart and pre-populate the rewards account data.
+> This is done to not cause a mess between algorithm changes in the environment.
+
+> When both algorithms are trying to award a share they will first are going to check if the share in the
+> current price range is already available in the rewards account, and if so there will be an attempt to award the share,
+> if that fails (means other user claimed the share, or share is moved), the algorithm will buy the share in the price range and will
+> try to award that until success.
+
+#### 🙈 If any of the above assumptions/explanations are too ambiguous and/or wrong please do not hesitate to contact me or, alternatively, please raise an issue on GitHub.
+
+⭐ Happy Assessing!
+
+
+
 
