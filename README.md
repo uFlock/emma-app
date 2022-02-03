@@ -142,20 +142,20 @@ const result = {
 
 ```ts
 const details = {
-   user: {
-      id: string,
-      email: string,
-      name: string,
-      shares: <{ tickerSymbol: string, quantity: number }>[],
-      shareClaimed: false //this is always false as is not used by the system
-   },
-   outcome: {
-      chance: number, //the chance that result was going to come up
-      result: { //actual price range outcome
-         min: number,
-         max: number
-      }
-   }
+	outcome: {
+		chance: number, //the chance that result was going to come up
+		result: { //actual price range outcome
+			min: number,
+			max: number
+		}
+	},
+	user: {
+		id: string,
+		email: string,
+		name: string,
+		shares: <{ tickerSymbol: string, quantity: number }>[],
+		shareClaimed: false //this is always false as is not used by the system
+	}
 };
 ```
 
@@ -163,11 +163,11 @@ const details = {
 
 ```ts
 const details = {
-   referralAggregation: { //this block will not appear on the very first award as there is nothing to aggregate
-      _id: "referral transactions",
-      numberOfTransactions: number,
-      totalValue: number
-   },
+	referralAggregation: { //this block will not appear on the very first award as there is nothing to aggregate
+		_id: "referral transactions",
+		numberOfTransactions: number,
+		totalValue: number
+	},
 	currentCpa: number, //current rolling CPA
 	targetCpa: number, //target CPA
 	allowedMaxPrice: number, //maximum value of the next awarded share
