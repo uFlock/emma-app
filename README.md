@@ -49,9 +49,7 @@ A simple Node.js api-server that implements 2 separate referral award algorithms
 
 ### 🌳 Environment Files Explained
 
-#### 📡 Server:
-
-`/server` has 3 .env files:
+`/server` has three `.env` files:
 
 1. `env.dev` - has all the settings for the dev environment that is invoked via the `npm run dev` command at the root
    level.
