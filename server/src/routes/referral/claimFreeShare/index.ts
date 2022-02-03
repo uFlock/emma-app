@@ -30,7 +30,9 @@ async function routeHandler(req: Request, res: Response) {
 		chances
 	});
 
-	res.send({ ...result, details: { ...result.details, user } });
+	const updatedUser = await getOrCreateUser(email);
+
+	res.send({ ...result, details: { ...result.details, user: updatedUser } });
 }
 
 //created for simplicity - so no need to register users

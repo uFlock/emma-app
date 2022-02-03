@@ -10,7 +10,7 @@ bear icon above.
 ### ☀️ Project Features
 
      📐 TypeScript/Express + MongoDB
-     🐳 Dockerised Development Environmet  
+     🐳 Dockerised Development Environmet + Hot Reload
      🔮 Test Driven Development
      🔄 Contineous Integration Pipeline (CI via Github Actions)
      📊 Two algorithms [➗Percentage Based] and [💰CPA]
@@ -171,6 +171,9 @@ const details = {
 > try to award that until success.
 
 > ⚠️ You will need to restart your dev/prod environment after changing the .env files for changes to take effect.
+
+> Due to the random nature of the CPA algorithm and random market conditions it is unlikely to hit 100% CPA it will 
+> always be a bit under or equal within the 5% of the target CPA. 
 
 #### 🙈 If you find any issues or if any of the above assumptions/explanations are too ambiguous and/or wrong please do not hesitate to contact me or, alternatively, please raise an issue on GitHub.
 
