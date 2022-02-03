@@ -51,3 +51,11 @@ export const INVALID_CHANCES_PAYLOAD_LOW_PRICE_RANGE: ChanceSettings[] = [
 		result: { min: 0.0001, max: 0.0002 }
 	},
 ];
+
+export const VALID_CPA_ENVIRONMENT_SETTINGS = {
+	chances: VALID_CHANCES_PAYLOAD,
+	cpa: {
+		value: TEST_CPA,
+		minCpaSharePrice: TEST_CPA_MIN_SHARE_PRICE
+	}
+};

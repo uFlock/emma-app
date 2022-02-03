@@ -30,7 +30,9 @@ async function routeHandler(req: Request, res: Response) {
 		chances
 	});
 
-	res.send(result);
+	console.log(result);
+
+	res.send({ ...result, details: { ...result.details, user } });
 }
 
 //created for simplicity - so no need to register users
