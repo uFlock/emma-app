@@ -1,5 +1,5 @@
 import { calculateOutcome, CHANCES_DO_NOT_ADD_UP_ERROR } from "./index";
-import { INVALID_CHANCES_PAYLOAD, VALID_CHANCES_PAYLOAD } from "../../test/constants";
+import { INVALID_CHANCES_PAYLOAD_NOT_100, VALID_CHANCES_PAYLOAD } from "../../test/constants";
 
 describe(`test chance calculation`, () => {
 
@@ -32,7 +32,7 @@ describe(`test chance calculation`, () => {
 	});
 
 	it(`throws and error if all chances don't add up to 100`, () =>
-		expect(() => calculateOutcome(INVALID_CHANCES_PAYLOAD))
+		expect(() => calculateOutcome(INVALID_CHANCES_PAYLOAD_NOT_100))
 			.toThrow(CHANCES_DO_NOT_ADD_UP_ERROR)
 	);
 });

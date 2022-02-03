@@ -1,4 +1,6 @@
 import {
+	INVALID_CHANCES_PAYLOAD_LOW_PRICE_RANGE,
+	LONG_TEST_TIMEOUT_1_MINUTE,
 	TEST_CPA,
 	TEST_CPA_MIN_SHARE_PRICE,
 	TEST_USER_EMAIL,
@@ -13,9 +15,9 @@ import { createRewardsAccount } from "../data-populator";
 import {
 	awardReferralShare,
 	awardShareToUserUsingCPA,
-	awardShareToUserUsingPercentSettings,
+	awardShareToUserUsingPercentSettings, CPA_CAN_NOT_BE_LESS_THAN_MIN_PRICE_ERROR,
 	CPA_VALUE_ERROR,
-	MIN_CPA_SHARE_PRICE_ERROR,
+	MIN_CPA_SHARE_PRICE_ERROR, NO_SHARE_IN_PRICE_RANGE_ON_THE_MARKET_ERROR,
 	REFERRAL_ALGORITHMS
 } from "./index";
 
@@ -27,7 +29,7 @@ const setupTest = async () => {
 	return { testUser, rewardsAccount };
 };
 
-const awardAmountOfSharesCPA = async (numberOfShares: number, user: UserAttributes,  CPA: number, minCpaSharePrice: number) => {
+const awardAmountOfSharesCPA = async (numberOfShares: number, user: UserAttributes, CPA: number, minCpaSharePrice: number) => {
 	for (let i = 0; i < numberOfShares; i++) {
 		await awardShareToUserUsingCPA(user, CPA, minCpaSharePrice);
 	}
@@ -93,6 +95,17 @@ describe(`Test referral-manager module`, () => {
 		}
 	});
 
+	it(`awardShareToUserUsingPercentSettings() throws error if no shares matching the price range`, async () => {
+
+		const { testUser } = await setupTest();
+
+
+		await expect(async () => await awardShareToUserUsingPercentSettings(testUser, INVALID_CHANCES_PAYLOAD_LOW_PRICE_RANGE))
+			.rejects
+			.toThrowError(NO_SHARE_IN_PRICE_RANGE_ON_THE_MARKET_ERROR);
+
+	});
+
 	it(`awardShareToUserUsingCPA() returns { referralAggregation?, currentCpa, targetCpa, allowedMaxPrice, shareAwarded }`, async () => {
 
 		const { testUser } = await setupTest();
@@ -152,7 +165,7 @@ describe(`Test referral-manager module`, () => {
 
 		expect(cpaDeviationFromTarget).toBeLessThanOrEqual(acceptableCpaDeviationFromTarget);
 
-	}, 60000);
+	}, LONG_TEST_TIMEOUT_1_MINUTE);
 
 	it(`awardShareToUserUsingCPA() there should be shares awarded over CPA value`, async () => {
 
@@ -168,7 +181,17 @@ describe(`Test referral-manager module`, () => {
 		});
 
 		expect(result.length).toBeGreaterThan(0);
-	}, 60000);
+
+	}, LONG_TEST_TIMEOUT_1_MINUTE);
+
+	it(`awardShareToUserUsingCPA() throws error if no shares matching the price range`, async () => {
+
+		const { testUser } = await setupTest();
+
+		await expect(async () => await awardShareToUserUsingCPA(testUser, 0.0001, 0.00001))
+			.rejects
+			.toThrowError(NO_SHARE_IN_PRICE_RANGE_ON_THE_MARKET_ERROR);
+	});
 
 	it(`awardShareToUserUsingCPA() throws error if CPA negative number`, async () => {
 
@@ -186,6 +209,15 @@ describe(`Test referral-manager module`, () => {
 		await expect(async () => await awardShareToUserUsingCPA(testUser, TEST_CPA, -TEST_CPA_MIN_SHARE_PRICE))
 			.rejects
 			.toThrowError(MIN_CPA_SHARE_PRICE_ERROR);
+	});
+
+	it(`awardShareToUserUsingCPA() throws error if CPA < minCpaSharePrice`, async () => {
+
+		const { testUser } = await setupTest();
+
+		await expect(async () => await awardShareToUserUsingCPA(testUser, 45, 50))
+			.rejects
+			.toThrowError(CPA_CAN_NOT_BE_LESS_THAN_MIN_PRICE_ERROR);
 	});
 
 	it(`awardReferralShare() calls the awardShareToUserUsingCPA() if correct CPA values provided`, async () => {

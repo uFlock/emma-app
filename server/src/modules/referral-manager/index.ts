@@ -21,6 +21,8 @@ export enum REFERRAL_ALGORITHMS {
 
 export const CPA_VALUE_ERROR = "CPA target bust be a positive number";
 export const MIN_CPA_SHARE_PRICE_ERROR = "minCpaSharePrice bust be a positive number";
+export const CPA_CAN_NOT_BE_LESS_THAN_MIN_PRICE_ERROR = "CPA can't be less than minCpaSharePrice";
+export const NO_SHARE_IN_PRICE_RANGE_ON_THE_MARKET_ERROR = "No shares matching the price range on the market";
 
 export async function awardReferralShare(props: AwardReferralShareProps) {
 
@@ -43,15 +45,21 @@ export async function awardShareToUserUsingPercentSettings(user: UserAttributes,
 
 export async function awardShareToUserUsingCPA(user: UserAttributes, CPA: number, minCpaSharePrice = 3) {
 
-	validateCpaValue(CPA);
-	validateMinCpaSharePrice(minCpaSharePrice);
+	validateCpaValues(CPA, minCpaSharePrice);
 
 	const referralAggregation = await getReferralTransactionsAggregation();
 	const { currentCpa, targetCpa, allowedMaxPrice } = calculateCpaValues(referralAggregation, CPA);
 
 	const shareAwarded = await awardShareToUserInPriceRange(user, minCpaSharePrice, allowedMaxPrice);
 
-	return { algorithm: REFERRAL_ALGORITHMS.CPA, referralAggregation, currentCpa, targetCpa, allowedMaxPrice, shareAwarded };
+	return {
+		algorithm: REFERRAL_ALGORITHMS.CPA,
+		referralAggregation,
+		currentCpa,
+		targetCpa,
+		allowedMaxPrice,
+		shareAwarded
+	};
 }
 
 async function getReferralTransactionsAggregation() {
@@ -114,6 +122,8 @@ async function buyRandomShareInPriceRange(user: UserAttributes, min: number, max
 	const availableSharesToBuyInPriceRange = getSharesInPriceRange(availableTickersWithPrice, min, max);
 	const randomShare = getRandomItemFromArray(availableSharesToBuyInPriceRange);
 
+	if (!randomShare) throw new Error(NO_SHARE_IN_PRICE_RANGE_ON_THE_MARKET_ERROR);
+
 	await broker.buySharesInRewardsAccount(randomShare.tickerSymbol, 1);
 
 	return awardShareToUserInPriceRange(user, min, max);
@@ -124,10 +134,8 @@ function getSharesInPriceRange(pricedTickers: (Ticker & TickerPrice)[], min: num
 		share.sharePrice >= min && share.sharePrice <= max);
 }
 
-function validateCpaValue(CPA?: number) {
-	if (!!CPA && CPA < 0)  throw new Error(CPA_VALUE_ERROR);
-}
-
-function validateMinCpaSharePrice(minCpaSharePrice?: number) {
-	if (!!minCpaSharePrice && minCpaSharePrice < 0)  throw new Error(MIN_CPA_SHARE_PRICE_ERROR);
+function validateCpaValues(CPA?: number, minCpaSharePrice?: number) {
+	if (!!CPA && CPA < 0) throw new Error(CPA_VALUE_ERROR);
+	if (!!minCpaSharePrice && minCpaSharePrice < 0) throw new Error(MIN_CPA_SHARE_PRICE_ERROR);
+	if (!!CPA && !!minCpaSharePrice && CPA < minCpaSharePrice) throw new Error(CPA_CAN_NOT_BE_LESS_THAN_MIN_PRICE_ERROR);
 }
