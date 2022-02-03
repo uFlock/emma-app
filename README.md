@@ -87,6 +87,31 @@ MAX3=200
 CPA=0 # 0 means disabled any non 0 value enables CPA logic and disables Percentage Algorithm | must be positive number
 MIN_CPA_SHARE_COST=3 # optional - defaults to 3 - minimum price share to award / must be positive number and below the CPA value
 ```
+### 🌟 Bonus Task 1
+
+The CPA algorithm has been implemented and is controlled by the CPA block in the .env file. Please check the section above 
+for more details.
+
+### 🌟 Bonus Task 2
+
+The task is a bit ambiguous, it states:
+
+>Assume that now support fractional shares and we decide to start awarding free portions of shares from popular companies like Apple, Google, Tesla because they’re more popular amongst users. Giving a whole Tesla is not feasible because the current price is £500+ so we need to give out a random fraction of it between £3-£200. State how you would adapt your system to achieve with that.
+
+So I assume that what is meant here is that `Broker` now supports fractional shares, and we can now buy/sell fractional shares directly to market.
+
+In that case the only adjustments that need to be made are:
+
+* Add fractional trading functionality to the `Broker` module.
+* Keep the CPA/Percentage logic to determine the price ranges.
+* Add an array of desirable shares, which can be configured by environment variables, api, anything really.
+* Slightly adjust `awardReferralShare()` to take into account the flag.
+* Pass that flag to `awardShareToUserUsingCPA()` and `awardShareToUserUsingPercentSettings()`.
+* Create functions `awardFractionalShareToUserInPriceRange()` and `buyRandomFractionalShareInPriceRange()` - that will pick a random share from the
+  ArrayOfDesirable shares, and then calculates the fraction that needs to be awarded, checks if the rewardsAccount already has that fraction of that
+share and then will either award or buy/award the needed fraction of the share.
+* `awardFractionalShareToUserInPriceRange()` and `buyRandomFractionalShareInPriceRange()` are going to be invoked by
+  `awardFractionalShareToUserInPriceRange()`/`buyRandomFractionalShareInPriceRange()` respectively based on the fractionalLogic Flag.
 
 ### ✨ Some Guidance/Explanation for Assessing Persons
 
