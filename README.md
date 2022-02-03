@@ -143,6 +143,11 @@ const details = {
 
 ```ts
 const details = {
+   referralAggregation: { //this block will not appear on the very first award as there is nothing to aggregate
+      _id: "referral transactions",
+      numberOfTransactions: number,
+      totalValue: number
+   },
 	currentCpa: number, //current rolling CPA
 	targetCpa: number, //target CPA
 	allowedMaxPrice: number, //maximum value of the next awarded share
@@ -165,7 +170,9 @@ const details = {
 > if that fails (means other user claimed the share, or share is moved), the algorithm will buy the share in the price range and will
 > try to award that until success.
 
-#### 🙈 If any of the above assumptions/explanations are too ambiguous and/or wrong please do not hesitate to contact me or, alternatively, please raise an issue on GitHub.
+> ⚠️ You will need to restart your dev/prod environment after changing the .env files for changes to take effect.
+
+#### 🙈 If you find any issues or if any of the above assumptions/explanations are too ambiguous and/or wrong please do not hesitate to contact me or, alternatively, please raise an issue on GitHub.
 
 ⭐ Happy Assessing!
 
