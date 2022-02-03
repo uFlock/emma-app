@@ -8,9 +8,9 @@ A simple Node.js api-server that implements 2 separate referral award algorithms
 ### ☀️ Project Features
 
 >  📐 TypeScript/Express + MongoDB  
->  🐳 Dockerised Development Environmet + Hot Reload  
+>  🐳 Dockerized Development Environment + Hot Reload  
 >  🔮 Test Driven Development  
->  🔄 Contineous Integration Pipeline (CI via Github Actions)  
+>  🔄 Continuous Integration Pipeline (CI via Github Actions)  
 >  📊 Two algorithms [➗Percentage Based] and [💰CPA]  
 >  📚 Some Documentation
 
