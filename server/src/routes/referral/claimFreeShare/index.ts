@@ -30,8 +30,6 @@ async function routeHandler(req: Request, res: Response) {
 		chances
 	});
 
-	console.log(result);
-
 	res.send({ ...result, details: { ...result.details, user } });
 }
 
