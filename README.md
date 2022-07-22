@@ -25,7 +25,7 @@ route is hit. The details and requirements of the task can be found [here](https
 
 ### 🚀 Getting Started
 
-1. Simply clone the project from `https://github.com/uFlock/primaryBid.git`.
+1. Simply clone the project from `https://github.com/uFlock/emma-app.git`.
 2. Project Root Level Commands (Run these at the project root level):
     * `npm run start` - builds and starts the "production" release that by default will run on `localhost:3000`.
     * `npm run dev` - starts development version with live reload in the docker container (using
@@ -39,7 +39,7 @@ route is hit. The details and requirements of the task can be found [here](https
 
 ### 👷 Example Dev Workflow
 
-1. Clone the project from `https://github.com/uFlock/primaryBid.git`.
+1. Clone the project from `https://github.com/uFlock/emma-app.git`.
 2. In the root directory run `npm run npm-install` command this will install all the dependencies for the `server`
    project. Alternatively you can `cd server && npm install`.
 3. Optional: Go into `server` directory and run `npm run test` command - this will run all the jest test suites and will
