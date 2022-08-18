@@ -31,7 +31,7 @@ route is hit. The details and requirements of the task can be found [here](https
     * `npm run dev` - starts development version with live reload in the docker container (using
       nodemon) `localhost:3000`.
     * `npm run npm-install` - If you want proper type checking and module resolution whilst developing, this swill
-      install all the dependencies in the respective `server` and `client` directories.
+      install all the dependencies in the respective directories.
     * `npm run down-all` - will run compose down for both environments.
 3. App Level Commands (Run these at `/server` level):
     * `npm install` - installs all the dependencies for server. (same as `npm run npm-install` at root level)
